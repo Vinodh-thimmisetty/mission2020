@@ -5,16 +5,18 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
-import java.util.Stack;
+
+import static data_structures.ConsoleLogger.printNodeValue;
 
 /**
  * @author Vinodh Kumar Thimmisetty
  */
 public class BinaryTreeTraversal<T> {
 
+
     public void preOrderTraversalRecursion(BinaryTreeNode<T> node) {
         if (Objects.isNull(node)) return;
-        System.out.print(node.getValue() + " --> ");
+        printNodeValue(node);
         preOrderTraversalRecursion(node.getLeft());
         preOrderTraversalRecursion(node.getRight());
     }
@@ -22,7 +24,7 @@ public class BinaryTreeTraversal<T> {
     public void inOrderTraversalRecursion(BinaryTreeNode<T> node) {
         if (Objects.isNull(node)) return;
         inOrderTraversalRecursion(node.getLeft());
-        System.out.print(node.getValue() + " --> ");
+        printNodeValue(node);
         inOrderTraversalRecursion(node.getRight());
     }
 
@@ -30,7 +32,7 @@ public class BinaryTreeTraversal<T> {
         if (Objects.isNull(node)) return;
         postOrderTraversalRecursion(node.getLeft());
         postOrderTraversalRecursion(node.getRight());
-        System.out.print(node.getValue() + " --> ");
+        printNodeValue(node);
     }
 
     public void preOrderTraversalIterative(BinaryTreeNode<T> node) {
@@ -38,7 +40,7 @@ public class BinaryTreeTraversal<T> {
         stack.push(node);
         do {
             node = stack.pop();
-            System.out.print(node.getValue() + " --> ");
+            printNodeValue(node);
             final BinaryTreeNode<T> rightNode = node.getRight();
             final BinaryTreeNode<T> leftNode = node.getLeft();
             if (rightNode != null) {
@@ -59,8 +61,10 @@ public class BinaryTreeTraversal<T> {
                 node = node.getLeft();
             }
             final BinaryTreeNode<T> topNode = stack.peek();
-            System.out.print(topNode.getValue() + " --> ");
-            node = stack.pop().getRight();
+            if (topNode != null) {
+                printNodeValue(topNode);
+                node = stack.pop().getRight();
+            }
         } while (node != null || !stack.isEmpty());
     }
 
@@ -73,12 +77,15 @@ public class BinaryTreeTraversal<T> {
                 node = node.getLeft();
             }
             BinaryTreeNode<T> topNode = stack.peek();
-            if (topNode.getRight() != null && topNode.getRight() != prevVisitedNode) {
-                prevVisitedNode = node = topNode.getRight();
-            } else {
-                System.out.print(topNode.getValue() + " --> ");
-                prevVisitedNode = stack.pop();
+            if (topNode != null) {
+                if (topNode.getRight() != null && topNode.getRight() != prevVisitedNode) {
+                    prevVisitedNode = node = topNode.getRight();
+                } else {
+                    printNodeValue(topNode);
+                    prevVisitedNode = stack.pop();
+                }
             }
+
         } while (!stack.isEmpty());
     }
 
@@ -90,8 +97,9 @@ public class BinaryTreeTraversal<T> {
             final BinaryTreeNode<T> firstElem = queue.remove();
             if (firstElem.getLeft() != null) queue.add(firstElem.getLeft());
             if (firstElem.getRight() != null) queue.add(firstElem.getRight());
-            System.out.print(firstElem.getValue() + " --> ");
+            printNodeValue(firstElem);
         } while (!queue.isEmpty());
 
     }
+
 }
